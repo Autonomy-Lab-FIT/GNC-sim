@@ -1,0 +1,39 @@
+# Logs and process files
+logs/
+*.log
+*.pid
+
+# MATLAB temporary files
+*.asv
+*.autosave
+
+# Large result files
+*.mat
+*.fig
+
+# System files
+.DS_Store
+Thumbs.db
+*~
+
+# IDE files
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Add any other specific files/folders you want to ignore
+MATLAB/test_scripts/
+MATLAB/examples/
+MATLAB/GNC_Algorithms/Guidance/MPC/casadi/
+MATLAB/GNC_Algorithms/Navigation/reactive/
+MATLAB/GNC_Algorithms/Navigation/config/get_reactive_config.m
+MATLAB/GNC_Algorithms/Navigation/estimators/test_scripts/ukf/UKF_PX4_sensor_fusion.m
+backup_scripts/
+
+# For example:
+# config/local_config.m
+# private/
+# experimental/
