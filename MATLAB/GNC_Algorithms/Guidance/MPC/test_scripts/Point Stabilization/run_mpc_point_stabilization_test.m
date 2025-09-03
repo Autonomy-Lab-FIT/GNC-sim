@@ -9,7 +9,7 @@ function run_mpc_point_stabilization_test(config, client)
     
     % Test parameters
     dt_dyn = 0.02;              % 50 Hz control rate
-    dt_gps = 0.1;               % 10 Hz GPS updates
+    dt_gps = 0.5;               % 5 Hz GPS updates
     flight_duration = 30;       % 30 second test
     
     % Initialize MPC
@@ -77,6 +77,7 @@ function run_mpc_point_stabilization_test(config, client)
         gps_update_due = (mod(step-1, gps_step_interval) == 0) && (step > 1);
         if gps_update_due
             y_meas = extract_gps_measurements(telemetry, config);
+            disp(y_meas)
             if ~isempty(y_meas)
                 [x_ukf, P_ukf] = UKF(@drone_dynamics_6_states, x_ukf, P_ukf, ukf_cfg.Q, ukf_cfg.R_gps, ...
                                      ukf_cfg.alpha, ukf_cfg.beta, ukf_cfg.kappa, ...

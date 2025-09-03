@@ -8,7 +8,7 @@ function run_hover_ukf_with_lidar()
     dt_dyn = 0.02; %50 hz
     dt_gps = 0.1;
     flight_duration = 60;
-    hover_target = [0, 0, -2, 0];
+    hover_target = [0, 4, -2, 0];
 
     % === LIDAR SETUP ===
     lidar_update_interval = round(0.2 / dt_dyn); % Update LiDAR plot every 0.2s (5Hz)

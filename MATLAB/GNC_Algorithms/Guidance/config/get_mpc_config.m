@@ -4,16 +4,16 @@ function mpc_config = get_mpc_config()
     
     % Timing parameters
     mpc_config.dt = 0.02;           % Control sample time (50 Hz)
-    mpc_config.N = 50;             % Prediction horizon, steps
+    mpc_config.N = 200;             % Prediction horizon, steps
 
-    % NEW: Obstacle configuration
+    % Obstacle configuration
     mpc_config.num_sectors = 30;    % Use 30 sectors for 360-degree awareness
     mpc_config.num_obstacles = 10;  % But only use 15 closest obstacles in the solver
     
-    mpc_config.guidance_horizon_time = 0.2; % look_ahead, s
+    mpc_config.guidance_horizon_time = 1.0; % look_ahead, s
     
     % Cost matrix weights
-    Q_pos = [25, 25, 30];        % Position weights [x, y, z]
+    Q_pos = [1, 1, 10];        % Position weights [x, y, z]
     Q_vel = [0.5, 0.5, 1];    % Velocity weights [vx, vy, vz]
     mpc_config.Q = diag([Q_pos, Q_vel]);
     

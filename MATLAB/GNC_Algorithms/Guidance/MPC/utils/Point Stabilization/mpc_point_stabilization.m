@@ -1,6 +1,6 @@
 function [pos_cmd, vel_cmd, mpc_state] = mpc_point_stabilization(target_position, current_state, mpc_config, mpc_state)
 %MPC_POINT_STABILIZATION Model Predictive Controller for point stabilization
-% Guidance-only version - outputs position and velocity setpoints only
+% Guidance - outputs position and velocity setpoints only
 
     import casadi.*
     
@@ -81,7 +81,7 @@ function [pos_cmd, vel_cmd, mpc_state] = mpc_point_stabilization(target_position
     catch ME
         warning('MPC solver failed: %s', ME.message);
         
-        % Fallback: use target position as command
+        %  use target position as command
         pos_cmd = target_position(:);
         vel_cmd = [0; 0; 0];
         

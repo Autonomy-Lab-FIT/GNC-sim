@@ -10,7 +10,7 @@ export ROS_DOMAIN_ID=1
 
 # Directories
 ALGORITHMS_SCRIPT_DIR="/root/sim_ws/GNC_algorithms"
-CORE_SCRIPT_DIR="/root/sim_ws/GNC_core"
+CORE_SCRIPT_DIR="/root/GNC_core"
 WORLDS_DIR="$ALGORITHMS_SCRIPT_DIR/gazebo_sim/worlds"
 LOGS_DIR="$ALGORITHMS_SCRIPT_DIR/logs"
 

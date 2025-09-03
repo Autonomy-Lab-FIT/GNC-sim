@@ -24,7 +24,7 @@ function mpc_state = initialize_mpc_solver(mpc_config)
         state_error = st - P(mpc_config.n_states+1:2*mpc_config.n_states);
         obj = obj + state_error' * mpc_config.Q * state_error + con' * mpc_config.R * con;
         
-        % Dynamics constraint using Forward Euler integration
+        % Dynamics constraint
         st_next = X(:,k+1);
         f_value = mpc_config.dynamics_function(st, con);
         st_next_euler = st + mpc_config.dt * f_value;
