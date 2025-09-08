@@ -172,7 +172,7 @@ setup_environment() {
     export GZ_CONFIG_PATH=/usr/share/gz
     export GZ_SIM_RESOURCE_PATH=/usr/share/gz/gz-sim8
     export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
-    
+    export DISPLAY=:0
     [ -f /opt/ros/jazzy/setup.bash ] && { source /opt/ros/jazzy/setup.bash; print_success "Sourced ROS2 Jazzy"; } || print_warning "ROS2 Jazzy setup not found"
     [ -f "$CORE_SCRIPT_DIR/internal/px4_ros2_ws/install/setup.bash" ] && { source "$CORE_SCRIPT_DIR/internal/px4_ros2_ws/install/setup.bash"; print_success "Sourced PX4 ROS2 workspace"; } || print_warning "PX4 ROS2 workspace not found"
 }
@@ -302,9 +302,9 @@ main() {
     
     # QGroundControl
     if [ "$SHOW_QGC" = "1" ]; then
-        start_process "QGroundControl.AppImage" 'su - qgcuser -c "cd /home/qgcuser/Downloads && ./QGroundControl.AppImage"' "qgroundcontrol.log" "Starting QGroundControl" 5 "visible"
+    start_process "QGroundControl.AppImage" 'su - qgcuser -c "export DISPLAY=:0 && cd /home/qgcuser/Downloads && ./QGroundControl.AppImage"' "qgroundcontrol.log" "Starting QGroundControl" 5 "visible"
     else
-        start_process "QGroundControl.AppImage" 'su - qgcuser -c "cd /home/qgcuser/Downloads && ./QGroundControl.AppImage"' "qgroundcontrol.log" "Starting QGroundControl" 5
+        start_process "QGroundControl.AppImage" 'su - qgcuser -c "export DISPLAY=:0 && cd /home/qgcuser/Downloads && ./QGroundControl.AppImage"' "qgroundcontrol.log" "Starting QGroundControl" 5
     fi
     
     export ROS_DOMAIN_ID=1
