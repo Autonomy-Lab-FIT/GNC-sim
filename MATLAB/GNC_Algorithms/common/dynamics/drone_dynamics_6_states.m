@@ -7,8 +7,8 @@ function x_dot = drone_dynamics_6_states(t, x)
     vel = x(4:6);
     
     % Parameters from your get_x500_params()
-    m = params.mass;                    
-    g = params.gravity;                 
+    m = params.m;                    
+    g = params.g;                 
     K_drag = params.K_drag_linear;         
     
     % Forces (from PX4 model)

@@ -10,7 +10,12 @@ function analyze_results(filename)
     ekf2 = data.ekf2_states(1:n, :);
     
     % Get commanded trajectory (should always exist now)
-    commanded = [data.commanded_x(1:n), data.commanded_y(1:n), data.commanded_z(1:n)];
+    % Replicate the scalar command value to match the length of the simulation data
+    cmd_x = repmat(data.commanded_x(1), n, 1);
+    cmd_y = repmat(data.commanded_y(1), n, 1);
+    cmd_z = repmat(data.commanded_z(1), n, 1);
+    
+    commanded = [cmd_x, cmd_y, cmd_z];
     
     if isfield(data, 'trajectory_type')
         fprintf('\n=== %s TRAJECTORY TEST RESULTS ===\n', upper(data.trajectory_type));

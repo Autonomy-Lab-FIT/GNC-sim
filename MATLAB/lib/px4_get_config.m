@@ -4,16 +4,12 @@ function config = px4_get_config()
 %   used throughout the PX4 control system.
 
     % Network configuration
-    % config.ip_address = '10.154.5.231';
     config.ip_address = get_first_ip_address;
     config.port = 8766;
     config.timeout_connect = 10;
     config.timeout_response = 1.0;
     config.timeout_telemetry = 2.0;
     config.max_response_size = 1024*1024; % 1MB max
-    
-    % Debug mode
-    config.debug_mode = false;
     
     % MAVLink Command IDs
     config.MAV_CMD_COMPONENT_ARM_DISARM = 400;
@@ -22,17 +18,13 @@ function config = px4_get_config()
     % PX4 Mode values
     config.PX4_CUSTOM_MAIN_MODE_OFFBOARD = 6;
     config.MAV_MODE_FLAG_CUSTOM_MODE_ENABLED = 1;
+
+    % Debug mode
+    config.debug_mode = false;
     
     % Flight parameters
-    config.takeoff_altitude = -2;  % Z is negative up in PX4 NED frame
+    config.takeoff_altitude = -10;  % Z is negative up in PX4 NED frame
     config.land_altitude = 0;
-    
-    % Pattern parameters
-    config.square_size = 5;        % 5m x 5m square
-    config.circle_radius = 3;      % 3m radius
-    config.circle_points = 12;     % Number of points in circle
-    config.waypoint_pause = 5;     % Seconds to pause at each waypoint
-    config.circle_pause = 2;       % Seconds to pause at each circle point
     
     % GUI parameters
     config.figure_position = [100, 100, 450, 400];  % Increased width for disarm button
@@ -81,14 +73,5 @@ function config = px4_get_config()
     config.gps.quality_state.last_state = [];              % 'good'/'poor' - last quality state
     config.gps.quality_state.last_timestamp = [];          % string - last quality check time
     config.gps.quality_state.session_log = {};             % cell array - session quality transitions
-    
-    % GPS Default Home Position (Optional - for 'config' method)
-    % Uncomment and set if you want a default home position for your research:
-    % config.gps.default_home.latitude_deg = 47.397743;     % degrees - Zurich coordinates
-    % config.gps.default_home.longitude_deg = 8.545594;     % degrees  
-    % config.gps.default_home.altitude_msl_m = 488.0;       % meters MSL
-    % config.gps.default_home.eph = NaN;                    % No quality data for manual coordinates
-    % config.gps.default_home.satellites_used = NaN;
-    % config.gps.default_home.fix_type = NaN;
     
 end

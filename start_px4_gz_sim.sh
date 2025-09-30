@@ -172,7 +172,7 @@ setup_environment() {
     export GZ_CONFIG_PATH=/usr/share/gz
     export GZ_SIM_RESOURCE_PATH=/usr/share/gz/gz-sim8
     export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
-    export DISPLAY=:0
+    # export DISPLAY=:0
     [ -f /opt/ros/jazzy/setup.bash ] && { source /opt/ros/jazzy/setup.bash; print_success "Sourced ROS2 Jazzy"; } || print_warning "ROS2 Jazzy setup not found"
     [ -f "$CORE_SCRIPT_DIR/internal/px4_ros2_ws/install/setup.bash" ] && { source "$CORE_SCRIPT_DIR/internal/px4_ros2_ws/install/setup.bash"; print_success "Sourced PX4 ROS2 workspace"; } || print_warning "PX4 ROS2 workspace not found"
 }
@@ -289,22 +289,47 @@ main() {
         fi
     fi
     
+    # # Custom spawn position support (arguments 3-6)
+    # SPAWN_X=${3:-0.0}; SPAWN_Y=${4:-0.0}; SPAWN_Z=${5:--2.0}; SPAWN_YAW=${6:-0.0}
+    # export PX4_SIM_INIT_LOCATION_X=$SPAWN_X PX4_SIM_INIT_LOCATION_Y=$SPAWN_Y PX4_SIM_INIT_LOCATION_Z=$SPAWN_Z PX4_SIM_INIT_YAW=$SPAWN_YAW
+
+    # Custom spawn position support (arguments 3-6)
+    SPAWN_X=${3:-0.0}; SPAWN_Y=${4:-0.0}; SPAWN_Z=${5:-0.0}; SPAWN_YAW=${6:-0.0}
+
+    # Convert yaw from degrees to radians
+    SPAWN_YAW_RAD=$(echo "scale=6; $SPAWN_YAW * 3.14159265359 / 180" | bc -l 2>/dev/null || echo "0.0")
+
+    # Set PX4_GZ_MODEL_POSE for spawn position (x,y,z,roll,pitch,yaw)
+    export PX4_GZ_MODEL_POSE="$SPAWN_X,$SPAWN_Y,$SPAWN_Z,0,0,$SPAWN_YAW_RAD"
+    export PX4_SIM_MODEL=$SELECTED_DRONE
+    
     # Start core processes
     print_header "Starting PX4 simulation stack"
-    start_process "px4_sitl" "cd $CORE_SCRIPT_DIR/PX4-Autopilot && UXRCE_DDS_CFG=udp://:8888 PX4_GZ_WORLD=$SELECTED_WORLD make px4_sitl $SELECTED_DRONE" "px4_sitl.log" "Starting PX4 SITL" 8
+    # start_process "px4_sitl" "cd $CORE_SCRIPT_DIR/PX4-Autopilot && UXRCE_DDS_CFG=udp://:8888 PX4_GZ_WORLD=$SELECTED_WORLD make px4_sitl $SELECTED_DRONE" "px4_sitl.log" "Starting PX4 SITL" 8
+    # start_process "px4_sitl" "cd $CORE_SCRIPT_DIR/PX4-Autopilot && UXRCE_DDS_CFG=udp://:8888 PX4_GZ_WORLD=$SELECTED_WORLD PX4_SIM_INIT_LOCATION_X=$SPAWN_X PX4_SIM_INIT_LOCATION_Y=$SPAWN_Y PX4_SIM_INIT_LOCATION_Z=$SPAWN_Z PX4_SIM_INIT_YAW=$SPAWN_YAW make px4_sitl $SELECTED_DRONE" "px4_sitl.log" "Starting PX4 SITL" 8
+    start_process "px4_sitl" "cd $CORE_SCRIPT_DIR/PX4-Autopilot && UXRCE_DDS_CFG=udp://:8888 PX4_GZ_WORLD=$SELECTED_WORLD PX4_GZ_MODEL_POSE='$SPAWN_X,$SPAWN_Y,$SPAWN_Z,0,0,$SPAWN_YAW_RAD' PX4_SIM_MODEL=$SELECTED_DRONE make px4_sitl $SELECTED_DRONE" "px4_sitl.log" "Starting PX4 SITL" 8
     start_process "MicroXRCEAgent" "$CORE_SCRIPT_DIR/internal/Micro-XRCE-DDS-Agent/build/MicroXRCEAgent udp4 -p 8888" "xrce_dds_agent.log" "Starting XRCE-DDS Agent" 3
     
+    print_success "Spawn position set to X:$SPAWN_X Y:$SPAWN_Y Z:$SPAWN_Z Yaw:$SPAWN_YAW"
+
     # Setup sensor bridge if needed
     setup_sensor_bridge "$SELECTED_DRONE" "$SELECTED_WORLD"
     
     # Start remaining processes
     start_process "bidirectional_bridge.py" "python3 $CORE_SCRIPT_DIR/internal/ros2_bridge/bidirectional_bridge.py" "bidirectional_bridge.log" "Starting bridge" 3
     
+    # # QGroundControl
+    # if [ "$SHOW_QGC" = "1" ]; then
+    # start_process "QGroundControl.AppImage" 'su - qgcuser -c "export DISPLAY=:0 && cd /home/qgcuser/Downloads && ./QGroundControl.AppImage"' "qgroundcontrol.log" "Starting QGroundControl" 5 "visible"
+    # else
+    #     start_process "QGroundControl.AppImage" 'su - qgcuser -c "export DISPLAY=:0 && cd /home/qgcuser/Downloads && ./QGroundControl.AppImage"' "qgroundcontrol.log" "Starting QGroundControl" 5
+    # fi
+
     # QGroundControl
     if [ "$SHOW_QGC" = "1" ]; then
-    start_process "QGroundControl.AppImage" 'su - qgcuser -c "export DISPLAY=:0 && cd /home/qgcuser/Downloads && ./QGroundControl.AppImage"' "qgroundcontrol.log" "Starting QGroundControl" 5 "visible"
+    start_process "QGroundControl.AppImage" 'su - qgcuser -c "cd /home/qgcuser/Downloads && ./QGroundControl.AppImage"' "qgroundcontrol.log" "Starting QGroundControl" 5 "visible"
     else
-        start_process "QGroundControl.AppImage" 'su - qgcuser -c "export DISPLAY=:0 && cd /home/qgcuser/Downloads && ./QGroundControl.AppImage"' "qgroundcontrol.log" "Starting QGroundControl" 5
+        start_process "QGroundControl.AppImage" 'su - qgcuser -c "cd /home/qgcuser/Downloads && ./QGroundControl.AppImage"' "qgroundcontrol.log" "Starting QGroundControl" 5
     fi
     
     export ROS_DOMAIN_ID=1

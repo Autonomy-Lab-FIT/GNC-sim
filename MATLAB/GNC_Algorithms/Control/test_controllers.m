@@ -8,5 +8,7 @@ client = px4_connect(config.ip_address, config.port);
 % Run the hover velocity control test (PID)
 % run_hover_cascade_controller_test(config, client);
 
+run_LQR(config, client)
+
  % Cleanup
 px4_cleanup(client);

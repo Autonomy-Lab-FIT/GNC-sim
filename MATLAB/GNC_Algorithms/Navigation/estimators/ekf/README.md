@@ -1,1 +1,0 @@
-# Extended Kalman Filter (EKF)\n\nEKF implementation for 13-state drone estimation.\n\n## Files (to be implemented):\n- `EKF_PX4.m` - Main EKF estimator\n- `ekf_prediction.m` - EKF prediction step\n- `ekf_correction.m` - EKF correction step\n- `jacobian_functions.m` - Analytical Jacobian calculations\n

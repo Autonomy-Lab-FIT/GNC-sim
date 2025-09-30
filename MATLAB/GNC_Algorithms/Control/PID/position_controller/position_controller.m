@@ -1,16 +1,4 @@
 function [vel_cmd_x, vel_cmd_y, vel_cmd_z] = position_controller(desired_pos, ukf_state, controller_config)
-%POSITION_CONTROLLER P controller for 6-state position control
-%   Implements PX4-compatible position controller using UKF state estimates
-%
-%   Inputs:
-%       desired_pos      - [3x1] Desired position [x, y, z] in NED frame (m)
-%       ukf_state        - [6x1] UKF state [px, py, pz, vx, vy, vz] 
-%       controller_config - Configuration structure with gains and limits
-%
-%   Outputs:
-%       vel_cmd_x        - North velocity command (m/s)
-%       vel_cmd_y        - East velocity command (m/s) 
-%       vel_cmd_z        - Down velocity command (m/s)
 
     % Extract UKF position estimates
     ukf_pos_x = ukf_state(1);  % North position (m)

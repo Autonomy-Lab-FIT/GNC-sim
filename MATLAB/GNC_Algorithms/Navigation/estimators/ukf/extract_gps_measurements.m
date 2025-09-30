@@ -26,17 +26,12 @@ function y_meas = extract_gps_measurements(telemetry, config)
                                           config.ref_lon, ...
                                           config.ref_alt);
     %down = -down;
-    % GPS velocity (already in NED frame from PX4)
+    % GPS velocity
     vel_north = telemetry.gps.vel_n_m_s;
     vel_east = telemetry.gps.vel_e_m_s;
     vel_down = telemetry.gps.vel_d_m_s;
     
-    % Assemble measurement vector [position; velocity]
+    % [position; velocity]
     y_meas = [north; east; down; vel_north; vel_east; vel_down];
     
-    % Debug output (optional)
-    if isfield(config, 'debug_gps') && config.debug_gps
-        fprintf('GPS NED: Pos[%.2f,%.2f,%.2f] Vel[%.2f,%.2f,%.2f]\n', ...
-                north, east, down, vel_north, vel_east, vel_down);
-    end
 end

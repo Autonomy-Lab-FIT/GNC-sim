@@ -1,19 +1,4 @@
 function [accel_cmd_x, accel_cmd_y, accel_cmd_z, vel_integral_state] = velocity_controller(desired_vel, ukf_state, vel_controller_config, vel_integral_state, dt)
-%VELOCITY_CONTROLLER_6DOF PID velocity controller for 6-state system
-%   Implements PX4-compatible velocity controller using UKF state estimates
-%   Outputs acceleration setpoints for PX4 attitude controller
-%
-%   Inputs:
-%       desired_vel         - [3x1] Desired velocity [vx, vy, vz] in NED frame (m/s)
-%       ukf_state          - [6x1] UKF state [px, py, pz, vx, vy, vz] 
-%       vel_controller_config - Configuration structure with PID gains
-%       vel_integral_state - [3x1] Integral state [int_x, int_y, int_z]
-%       dt                 - Time step (s)
-%
-%   Outputs:
-%       accel_cmd_x        - North acceleration command (m/s²)
-%       accel_cmd_y        - East acceleration command (m/s²) 
-%       accel_cmd_z        - Down acceleration command (m/s²)
 
     % Extract UKF velocity estimates
     ukf_vel_x = ukf_state(4);  % North velocity (m/s)
