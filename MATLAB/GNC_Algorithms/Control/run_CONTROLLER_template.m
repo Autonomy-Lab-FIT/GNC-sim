@@ -26,7 +26,7 @@ function run_CONTROLLER_template()
             flight_duration = 15;
     end
     
-    % TARGET STATES
+    % TARGET/REFERENCE STATES
 
     % WEIGHTS FOR YOUR CONTROLLER
     
@@ -57,11 +57,11 @@ function run_CONTROLLER_template()
     
     fprintf('Takeoff complete at %.1fm\n', current_alt);
     
-    % switch to rate control for LQR
+    % switch to control mode
     px4_switch_control_mode(client, CONTROL_MODE, config);
     pause(2);  % Allow mode transition
     
-    fprintf('Starting LQR rate control...\n');
+    fprintf('Starting manual control...\n');
     log_data = initialize_logging();
 
      % simulation loop
@@ -125,9 +125,7 @@ function run_CONTROLLER_template()
                 error('Invalid CONTROL_MODE: %s. Must be position, attitude, or rates', CONTROL_MODE);
         end
 
-        % px4_send_rate_setpoint(client, u_lqr(1), x_next(11), x_next(12), x_next(13), config);
-        % px4_send_trajectory(client, x_next(1), x_next(2), x_next(3), 0 , config)
-        
+        % REMOVE or MODIFY the lines below to display the current status of the simulation
        if mod(round(t/dt_dyn), 25) == 0
             fprintf('t=%.1fs | pos=[%.2f,%.2f,%.2f] err=[%.2f,%.2f,%.2f](%.2fm) | vel=[%.2f,%.2f,%.2f] | ', ...
                     t, x_curr(1), x_curr(2), x_curr(3), ...
