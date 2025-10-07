@@ -2,6 +2,12 @@
 
 This guide provides installation instructions for both Windows and Linux systems.
 
+Use the following template as your main script to run your controller
+
+'''
+MATLAB\GNC_Algorithms\Control\run_CONTROLLER_template.m
+'''
+
 ---
 
 ## Table of Contents
