@@ -8,6 +8,17 @@
 GREEN='\033[0;32m'; BLUE='\033[0;34m'; YELLOW='\033[1;33m'; RED='\033[0;31m'; NC='\033[0m'
 export ROS_DOMAIN_ID=1
 
+# Simple OS detection with display configuration
+if grep -qi microsoft /proc/version 2>/dev/null; then
+    OS_TYPE="WSL"
+    export DISPLAY=:0
+    echo -e "${GREEN}Running on Windows (WSL) - DISPLAY set to :0${NC}"
+else
+    OS_TYPE="LINUX"
+    export DISPLAY=:1
+    echo -e "${GREEN}Running on Linux - DISPLAY set to :1${NC}"
+fi
+
 # Directories
 ALGORITHMS_SCRIPT_DIR="/root/sim_ws/GNC_algorithms"
 CORE_SCRIPT_DIR="/root/GNC_core"
@@ -318,20 +329,26 @@ main() {
     # Start remaining processes
     start_process "bidirectional_bridge.py" "python3 $CORE_SCRIPT_DIR/internal/ros2_bridge/bidirectional_bridge.py" "bidirectional_bridge.log" "Starting bridge" 3
     
-    # # QGroundControl
+    # # QGroundControl, windows
     # if [ "$SHOW_QGC" = "1" ]; then
     # start_process "QGroundControl.AppImage" 'su - qgcuser -c "export DISPLAY=:0 && cd /home/qgcuser/Downloads && ./QGroundControl.AppImage"' "qgroundcontrol.log" "Starting QGroundControl" 5 "visible"
     # else
     #     start_process "QGroundControl.AppImage" 'su - qgcuser -c "export DISPLAY=:0 && cd /home/qgcuser/Downloads && ./QGroundControl.AppImage"' "qgroundcontrol.log" "Starting QGroundControl" 5
     # fi
 
-    # QGroundControl
-    if [ "$SHOW_QGC" = "1" ]; then
-    start_process "QGroundControl.AppImage" 'su - qgcuser -c "cd /home/qgcuser/Downloads && ./QGroundControl.AppImage"' "qgroundcontrol.log" "Starting QGroundControl" 5 "visible"
-    else
-        start_process "QGroundControl.AppImage" 'su - qgcuser -c "cd /home/qgcuser/Downloads && ./QGroundControl.AppImage"' "qgroundcontrol.log" "Starting QGroundControl" 5
-    fi
+    # # QGroundControl, linux
+    # if [ "$SHOW_QGC" = "1" ]; then
+    # start_process "QGroundControl.AppImage" 'su - qgcuser -c "cd /home/qgcuser/Downloads && ./QGroundControl.AppImage"' "qgroundcontrol.log" "Starting QGroundControl" 5 "visible"
+    # else
+    #     start_process "QGroundControl.AppImage" 'su - qgcuser -c "cd /home/qgcuser/Downloads && ./QGroundControl.AppImage"' "qgroundcontrol.log" "Starting QGroundControl" 5
+    # fi
     
+    # QGroundControl, auto detect OS
+    if [ "$SHOW_QGC" = "1" ]; then
+        start_process "QGroundControl.AppImage" 'su - qgcuser -c "export DISPLAY='$DISPLAY' && cd /home/qgcuser/Downloads && ./QGroundControl.AppImage"' "qgroundcontrol.log" "Starting QGroundControl" 5 "visible"
+    else
+        start_process "QGroundControl.AppImage" 'su - qgcuser -c "export DISPLAY='$DISPLAY' && cd /home/qgcuser/Downloads && ./QGroundControl.AppImage"' "qgroundcontrol.log" "Starting QGroundControl" 5
+    fi
     export ROS_DOMAIN_ID=1
     display_status
     export ROS_DOMAIN_ID=1
