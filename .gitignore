@@ -37,3 +37,6 @@ backup_scripts/
 # config/local_config.m
 # private/
 # experimental/
+MATLAB/GNC_Algorithms/Control/LQR/run_LQR.m
+MATLAB/GNC_Algorithms/Control/LQR/compute_k_matrix.m
+MATLAB/GNC_Algorithms/Navigation/estimators/
