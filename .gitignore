@@ -40,3 +40,4 @@ backup_scripts/
 MATLAB/GNC_Algorithms/Control/LQR/run_LQR.m
 MATLAB/GNC_Algorithms/Control/LQR/compute_k_matrix.m
 MATLAB/GNC_Algorithms/Navigation/estimators/
+MATLAB/GNC_Algorithms/Control/LQT/
