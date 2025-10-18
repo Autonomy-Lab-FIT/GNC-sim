@@ -61,23 +61,26 @@ Since Docker is built on Linux, we need to emulate a Linux environment on Window
 2. Search and install **Ubuntu 24**
 3. Restart the computer if needed
 
-#### Step 4: Configure Docker Desktop with WSL Integration
+#### Step 4: Set Up Ubuntu Terminal
 
-1. Open Docker Desktop application
-2. You can skip the sign-in process if prompted
-3. Click on the gear icon (Settings) located on the top right
-4. Click on **Resources**
-5. Select **WSL Integration**
-6. Enable the button next to Ubuntu 24 (it should turn blue from gray)
-7. Click **Apply & Restart** to apply the settings
-
-#### Step 5: Set Up Ubuntu Terminal
-
-1. Go to the cmd (opened normally without admin rights)
+1. Once the installation is completed, go to the cmd (opened normally without admin rights)
 2. On the top, you will find a dropdown button
 3. Select **Ubuntu 24** from the dropdown list
 4. Ubuntu 24 terminal will open
 5. Set a username and password of your choice (ensure your username has no spaces)
+
+#### Step 5: Configure Docker Desktop with WSL Integration
+
+1. Once you set up the ubuntu terminal with your username and password.
+2. Open Docker Desktop application
+3. You can skip the sign-in process if prompted
+4. Click on the gear icon (Settings) located on the top right
+5. Click on **Resources**
+6. Select **WSL Integration**
+7. Enable the button next to Ubuntu 24 (it should turn blue from gray)
+8. Click **Apply & Restart** to apply the settings in the docker application
+
+
 
 #### Step 6: Test Display Settings
 
@@ -95,7 +98,7 @@ A clock UI should appear. This confirms that WSL is able to forward the UI betwe
 
 #### Step 7: Pull Docker Image
 
-Pull the Docker image from Docker Hub:
+In the same ubuntu terminal, Pull the Docker image from Docker Hub by running the following code:
 ```bash
 docker pull prenithreddy/gnc_simulator:latest
 ```
